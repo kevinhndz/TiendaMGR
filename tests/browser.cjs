@@ -3,7 +3,8 @@ const assert = require('node:assert/strict');
 const { spawn } = require('node:child_process');
 
 (async () => {
-    const server = spawn('python3', ['-m', 'http.server', '8765', '--bind', '127.0.0.1', '--directory', 'public'], { stdio: 'ignore' });
+    const externalUrl = process.env.TIENDA_TEST_URL;
+    const server = externalUrl ? null : spawn('python3', ['-m', 'http.server', '8765', '--bind', '127.0.0.1', '--directory', 'public'], { stdio: 'ignore' });
     let browser;
     try {
         browser = await chromium.launch({ headless: true });
@@ -11,7 +12,7 @@ const { spawn } = require('node:child_process');
         const errors = [];
         page.on('pageerror', error => errors.push(error.message));
         page.on('dialog', dialog => dialog.accept());
-        await page.goto('http://127.0.0.1:8765', { waitUntil: 'domcontentloaded' });
+        await page.goto(externalUrl || 'http://127.0.0.1:8765', { waitUntil: 'domcontentloaded' });
         await page.locator('[data-producto="Camisas"]').click();
         await page.locator('#cantidadProducto').fill('2');
         await page.locator('#personalizacionProducto').fill('Mi camisa');
@@ -50,6 +51,6 @@ const { spawn } = require('node:child_process');
         console.log('Productos, carrito, persistencia, WhatsApp, placas, galeria y menu: OK');
     } finally {
         if (browser) await browser.close();
-        server.kill();
+        if (server) server.kill();
     }
 })().catch(error => { console.error(error); process.exitCode = 1; });

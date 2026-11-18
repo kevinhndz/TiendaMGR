@@ -35,6 +35,8 @@ jobs:
         run: docker compose config --quiet
       - name: Construir imagen existente
         run: docker build -t tienda-ci .
+      - name: Probar despliegue y recuperacion aislados
+        run: python3 tests/deploy_integration.py
       - name: Probar archivos servidos por Nginx
         shell: bash
         run: |
@@ -45,3 +47,60 @@ jobs:
             curl --fail --silent --show-error --retry 10 --retry-all-errors --retry-delay 1 "http://127.0.0.1:8080/$archivo" -o /tmp/recurso
             test -s /tmp/recurso
           done
+      - name: Guardar sitio validado
+        uses: actions/upload-artifact@v4
+        with:
+          name: tienda-public-${{ github.sha }}
+          path: public/
+          retention-days: 7
+  desplegar:
+    needs: validar
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: tiendamgr-produccion
+      cancel-in-progress: false
+    env:
+      DEPLOY_HOST: ${{ vars.TIENDA_DEPLOY_HOST }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/download-artifact@v4
+        with:
+          name: tienda-public-${{ github.sha }}
+          path: public/
+      - name: Preparar paquete y herramientas de verificacion
+        run: |
+          python3 scripts/deploy/package.py "$GITHUB_SHA"
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: Configurar acceso SSH exclusivo
+        env:
+          DEPLOY_KEY: ${{ secrets.TIENDA_DEPLOY_KEY }}
+          KNOWN_HOSTS: ${{ secrets.TIENDA_DEPLOY_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          umask 077
+          printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/tiendamgr_cd
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+      - name: Publicar version validada
+        id: publicar
+        run: |
+          ssh -i ~/.ssh/tiendamgr_cd -o BatchMode=yes -o StrictHostKeyChecking=yes -o ServerAliveInterval=15 -o ServerAliveCountMax=4 "root@$DEPLOY_HOST" "deploy $GITHUB_SHA" < deployment/site.tar.gz
+      - name: Verificar tienda publicada en Chromium
+        env:
+          TIENDA_TEST_URL: https://tiendamgr.duckdns.org/
+        run: node tests/browser.cjs
+      - name: Recuperar version anterior si falla la verificacion
+        if: failure() && steps.publicar.outcome == 'success'
+        run: |
+          ssh -i ~/.ssh/tiendamgr_cd -o BatchMode=yes -o StrictHostKeyChecking=yes "root@$DEPLOY_HOST" "rollback $GITHUB_SHA"
+      - name: Eliminar llave del runner
+        if: always()
+        run: rm -f ~/.ssh/tiendamgr_cd
