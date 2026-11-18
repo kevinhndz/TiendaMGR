@@ -1,0 +1,8 @@
+estado.js
+elementos.js
+formato.js
+producto.js
+carrito.js
+pedido.js
+galeria.js
+inicio.js

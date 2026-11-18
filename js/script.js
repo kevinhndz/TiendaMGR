@@ -1,9 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
 
 
-    /* =====================================================
-       VARIABLES
-    ====================================================== */
+    
 
     const CLAVE_CARRITO = "creacionesStyleMGR_carrito_v1";
 
@@ -32,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
         try {
             localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito));
         } catch (error) {
-            // La tienda sigue funcionando aunque el navegador bloquee el almacenamiento.
+            // El almacenamiento puede estar bloqueado.
         }
     }
 
@@ -41,9 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let productoActual = null;
 
 
-    /* =====================================================
-       ELEMENTOS
-    ====================================================== */
+    
 
     const modal =
         document.getElementById("productoModal");
@@ -160,18 +156,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    /* =====================================================
-       FORMULARIO CLIENTE
-    ====================================================== */
+    
 
     const formCliente =
         document.getElementById("formCliente");
 
 
 
-    /* =====================================================
-       FORMATEAR MONEDA
-    ====================================================== */
+    
 
     function dinero(numero) {
         return "L." + Number(numero).toLocaleString("es-HN");
@@ -191,9 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    /* =====================================================
-       ABRIR PRODUCTO
-    ====================================================== */
+    
 
     document.querySelectorAll(
         ".btn-ver-producto"
@@ -273,7 +263,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     productoActual.nombre;
 
 
-                /* OCULTAR CAMPOS */
+                
 
                 campoTipoCamisa.style.display =
                     "none";
@@ -285,7 +275,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     "none";
 
 
-                /* CAMISAS */
+                
 
                 if (
                     productoActual.nombre ===
@@ -304,7 +294,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
 
-                /* PLACAS */
+                
 
                 if (
                     productoActual.nombre ===
@@ -342,9 +332,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    /* =====================================================
-       PRECIO PLACA
-    ====================================================== */
+    
 
     function actualizarPrecioPlaca() {
 
@@ -387,9 +375,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    /* =====================================================
-       CERRAR MODAL PRODUCTO
-    ====================================================== */
+    
 
     function cerrarProducto() {
 
@@ -411,9 +397,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    /* =====================================================
-       AGREGAR AL CARRITO
-    ====================================================== */
+    
 
     agregarCarrito.addEventListener(
         "click",
@@ -443,7 +427,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let detalles = [];
 
 
-            /* CAMISAS */
+            
 
             if (
                 productoActual.nombre ===
@@ -463,7 +447,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            /* PLACAS */
+            
 
             if (
                 productoActual.nombre ===
@@ -478,7 +462,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            /* COLOR */
+            
 
             if (
                 colorProducto.value !==
@@ -493,7 +477,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            /* PERSONALIZACIÓN */
+            
 
             if (
                 personalizacionProducto.value.trim()
@@ -547,9 +531,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    /* =====================================================
-       ACTUALIZAR CARRITO
-    ====================================================== */
+    
 
     function actualizarCarrito() {
 
@@ -693,7 +675,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-        /* BOTÓN MENOS */
+        
 
         document.querySelectorAll(
             ".menos"
@@ -717,7 +699,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-        /* BOTÓN MÁS */
+        
 
         document.querySelectorAll(
             ".mas"
@@ -741,7 +723,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-        /* ELIMINAR */
+        
 
         document.querySelectorAll(
             ".btn-eliminar"
@@ -778,9 +760,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    /* =====================================================
-       CAMBIAR CANTIDAD
-    ====================================================== */
+    
 
     function cambiarCantidad(
         id,
@@ -829,9 +809,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    /* =====================================================
-       ABRIR CARRITO
-    ====================================================== */
+    
 
     function abrirCarritoModal() {
 
@@ -853,9 +831,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    /* =====================================================
-       CERRAR CARRITO
-    ====================================================== */
+    
 
     cerrarCarrito.addEventListener(
         "click",
@@ -874,9 +850,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    /* =====================================================
-       VACIAR
-    ====================================================== */
+    
 
     vaciarCarrito.addEventListener(
         "click",
@@ -909,9 +883,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    /* =====================================================
-       FINALIZAR PEDIDO
-    ====================================================== */
+    
 
     finalizarPedido.addEventListener(
         "click",
@@ -945,9 +917,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    /* =====================================================
-       CERRAR CLIENTE
-    ====================================================== */
+    
 
     cerrarCliente.addEventListener(
         "click",
@@ -966,9 +936,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    /* =====================================================
-       FORMULARIO CLIENTE
-    ====================================================== */
+    
 
     formCliente.addEventListener(
         "submit",
@@ -1158,9 +1126,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    /* =====================================================
-       MINIATURAS
-    ====================================================== */
+    
 
     document.querySelectorAll(
         ".miniatura"
@@ -1214,9 +1180,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    /* =====================================================
-       CERRAR MODALES CON ESC
-    ====================================================== */
+    
 
     document.addEventListener(
         "keydown",
@@ -1249,9 +1213,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    /* =====================================================
-       INICIAR
-    ====================================================== */
+    
 
     actualizarCarrito();
 
