@@ -11,13 +11,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class Document(HTMLParser):
-    def __init__(self):
+    def __init__(self, normalize_entry=False):
         super().__init__(convert_charrefs=True)
         self.events = []
+        self.normalize_entry = normalize_entry
 
     def handle_starttag(self, tag, attrs):
-        self.events.append(('start', tag, [(key, 'js/script.js' if tag == 'script' and value == 'js/app.js' else value) for key, value in attrs
-                                                 if not (tag == 'script' and key == 'type')]))
+        self.events.append(('start', tag, [(key, 'js/script.js' if self.normalize_entry and tag == 'script' and value == 'js/app.js' else value) for key, value in attrs
+                                                 if not (self.normalize_entry and tag == 'script' and key == 'type')]))
 
     def handle_endtag(self, tag):
         self.events.append(('end', tag))
@@ -30,7 +31,7 @@ class Document(HTMLParser):
 
 def fingerprint(name, text):
     if name.endswith('.html'):
-        document = Document()
+        document = Document(normalize_entry=True)
         document.feed(text)
         value = json.dumps(document.events, ensure_ascii=False)
     else:
