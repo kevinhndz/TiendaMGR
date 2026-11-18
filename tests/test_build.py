@@ -16,7 +16,7 @@ class Document(HTMLParser):
         self.events = []
 
     def handle_starttag(self, tag, attrs):
-        self.events.append(('start', tag, [(key, value) for key, value in attrs
+        self.events.append(('start', tag, [(key, 'js/script.js' if tag == 'script' and value == 'js/app.js' else value) for key, value in attrs
                                                  if not (tag == 'script' and key == 'type')]))
 
     def handle_endtag(self, tag):

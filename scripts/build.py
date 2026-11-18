@@ -20,7 +20,7 @@ def build(check=False):
         (css / name).read_text() for name in (css / 'orden.txt').read_text().splitlines() if name)
     for source in (ROOT / 'src/js').glob('*.js'):
         outputs['js/' + source.name] = source.read_text()
-    outputs['js/script.js'] = "import './inicio.js';\n"
+    outputs['js/app.js'] = "import './inicio.js';\n"
     for name, content in outputs.items():
         path = ROOT / 'public' / name
         if check:
