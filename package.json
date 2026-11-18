@@ -1,0 +1,11 @@
+{
+  "name": "tiendamgr",
+  "private": true,
+  "scripts": {
+    "build": "python3 scripts/build.py",
+    "test": "python3 -m unittest discover -s tests -v && node tests/browser.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.65.1"
+  }
+}
