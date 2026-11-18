@@ -1,45 +1,34 @@
 # TiendaMGR
 
-Sitio de Creaciones Style MG-R con catálogo, personalización de productos, carrito en el navegador y pedidos por WhatsApp.
+Sitio de Creaciones Style MG-R con catalogo, personalizacion, carrito local y pedidos por WhatsApp.
 
-## Despliegue con Docker
+## Editar el sitio
 
-Requiere Git, Docker Engine y el complemento Docker Compose en el servidor.
+- `src/html/index.html`: estructura principal y orden de las secciones.
+- `src/html/`: cabecera, secciones, tarjetas de productos, modales y pie.
+- `src/css/`: estilos por responsabilidad. `orden.txt` conserva la cascada original.
+- `src/js/`: estado, elementos, formato, producto, carrito, pedido y galeria. `orden.txt` conserva el orden de ejecucion.
 
-```bash
-git clone https://github.com/kevinhndz/TiendaMGR.git
-cd TiendaMGR
-sudo docker compose up -d --build
-```
-
-Abre `http://IP_DEL_SERVIDOR`. El puerto TCP 80 debe estar permitido en el firewall.
+Despues de editar los archivos fuente:
 
 ```bash
-sudo docker compose ps
-sudo docker compose logs --tail=100 web
+python3 scripts/build.py
+python3 -m unittest discover -s tests -v
+node --check js/script.js
 ```
 
-## HTTPS con un dominio
+El generador expande `{{ incluir:archivo.html }}` y concatena CSS y JavaScript. Los fragmentos JavaScript comparten el mismo cierre de `DOMContentLoaded`; no son scripts independientes. No hay peticiones adicionales ni dependencias nuevas en el navegador.
 
-Apunta el registro DNS A del dominio a la IP del servidor y permite los puertos TCP 80 y 443. Reemplaza `:80` en `Caddyfile` por tu dominio real, por ejemplo `tienda.example.com`, conservando el resto del bloque. Publica el cambio y reconstruye el contenedor. Caddy gestionará el certificado y su renovación; los volúmenes conservan sus datos.
+Incluye en cada commit los archivos fuente y los generados: `index.html`, `css/estilos.css` y `js/script.js`. Docker sigue copiando los mismos archivos estaticos. No edites directamente los generados.
 
-## Actualizar el sitio
+## Validacion continua
 
-Después de publicar los cambios en GitHub, ejecuta desde la carpeta del proyecto en el servidor:
+`.github/workflows/ci.yml` se ejecuta en pushes y pull requests. Verifica generacion, recursos locales, sintaxis JavaScript, Compose y HTTP dentro de la imagen Nginx existente. No reinicia servicios de produccion.
 
-```bash
-git pull --ff-only
-sudo docker compose up -d --build
-```
+`tests/original.json` registra las huellas del sitio anterior a la modularizacion. Un cambio intencional de contenido requiere revisar y actualizar esa referencia; no la regeneres para ocultar una regresion.
 
-Los archivos del sitio se copian dentro de la imagen, por lo que cada actualización requiere reconstruirla.
+## Despliegue existente
 
-## Archivos de despliegue
+La aplicacion usa `nginx:alpine`, el servicio `tienda-frontend` y la red externa `red-saas`. Otro contenedor Nginx recibe el trafico del dominio. Se conservan `Dockerfile` y `docker-compose.yml`.
 
-- `Dockerfile`: prepara la imagen de Caddy y copia los archivos públicos.
-- `Caddyfile`: configura el servidor de archivos estáticos; inicialmente usa HTTP por IP.
-- `docker-compose.yml`: configura el servicio, los puertos, el reinicio automático, los volúmenes y el límite de registros.
-- `.dockerignore`: excluye archivos innecesarios del contexto de construcción.
-- `.gitignore`: excluye configuraciones locales, secretos y archivos temporales del repositorio.
-
-El sitio no necesita base de datos ni dependencias de Node.js. El carrito se conserva únicamente en el navegador de cada visitante.
+El servidor mantiene el repositorio en `/srv/proyectos/TiendaMGR`. Antes de actualizar, verifica rama, estado y respaldo. Genera y valida los archivos antes de construir la imagen. La reconstruccion habitual con Compose reemplaza el contenedor y puede producir una interrupcion breve; no ejecutes `docker compose down` para actualizar.

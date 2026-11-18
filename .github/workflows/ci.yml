@@ -1,0 +1,36 @@
+name: Validar tienda
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validar archivos generados y recursos
+        run: python3 -m unittest discover -s tests -v
+      - name: Validar sintaxis JavaScript
+        run: node --check js/script.js
+      - name: Validar Compose
+        run: docker compose config --quiet
+      - name: Construir imagen existente
+        run: docker build -t tienda-ci .
+      - name: Probar archivos servidos por Nginx
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run -d --name tienda-ci -p 127.0.0.1:8080:80 tienda-ci
+          trap 'docker rm -f tienda-ci' EXIT
+          for archivo in index.html css/estilos.css js/script.js img/logo.PNG google568e52d863922e97.html; do
+            curl --fail --silent --show-error --retry 10 --retry-connrefused --retry-delay 1 "http://127.0.0.1:8080/$archivo" -o /tmp/recurso
+            test -s /tmp/recurso
+          done
