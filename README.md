@@ -11,30 +11,6 @@ Sitio de Creaciones Style MG-R con catalogo, personalizacion, carrito local y pe
 
 El navegador carga modulos nativos con `type="module"`. Cada archivo JavaScript tiene sintaxis valida por si mismo. No hay funciones abiertas entre archivos.
 
-## Generar y probar
-
-```bash
-python3 scripts/build.py
-python3 -m unittest discover -s tests -v
-```
-
-La salida se escribe en `public/`, carpeta generada e ignorada por Git. No edites sus archivos. El HTML incluye las secciones antes de publicarse para conservar el contenido disponible desde la primera respuesta HTTP. El CSS conserva la cascada y las rutas originales. JavaScript se publica como modulos separados.
-
-Para ver el sitio localmente:
-
-```bash
-python3 -m http.server 8080 --directory public
-```
-
-Para probar los flujos en Chromium:
-
-```bash
-npm ci
-npx playwright install chromium
-node tests/browser.cjs
-```
-
-Node y Playwright solo se usan para pruebas. No se agregan a la imagen de produccion. Las pruebas cubren productos, cantidades, persistencia, pedido de WhatsApp sin enviarlo, precio de placas, miniaturas y menu movil.
 
 ## CI y despliegue existente
 
