@@ -3,6 +3,7 @@ import argparse
 from pathlib import Path
 import re
 import shutil
+import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -32,11 +33,18 @@ def build(check=False):
 
     if not check:
         shutil.copytree(ROOT / 'img', ROOT / 'public/img', dirs_exist_ok=True)
-        shutil.copyfile(ROOT / 'google568e52d863922e97 (1).html',
-                        ROOT / 'public/google568e52d863922e97.html')
+        for name in ['google568e52d863922e97.html', 'google568e52d863922e97 (1).html']:
+            shutil.copyfile(ROOT / 'google568e52d863922e97 (1).html', ROOT / 'public' / name)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--check', action='store_true')
-    build(parser.parse_args().check)
+    parser.add_argument('--image', help='Construye una imagen desde public con el Dockerfile original')
+    args = parser.parse_args()
+    if args.check and args.image:
+        parser.error('--check no construye imagenes')
+    build(args.check)
+    if args.image:
+        subprocess.run(['docker', 'build', '-f', str(ROOT / 'Dockerfile'),
+                        '-t', args.image, str(ROOT / 'public')], check=True)

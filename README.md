@@ -40,6 +40,22 @@ Node y Playwright solo se usan para pruebas. No se agregan a la imagen de produc
 
 `.github/workflows/ci.yml` genera el sitio, comprueba HTML y CSS contra la referencia anterior, verifica la sintaxis de cada modulo y prueba los flujos en Chromium. Tambien construye la imagen Docker y verifica sus respuestas HTTP.
 
-Antes de construir la imagen, ejecuta `python3 scripts/build.py`. El Dockerfile copia los archivos generados de `public/`, conservando `nginx:alpine`, las rutas publicas y el puerto 80. Compose sigue usando `tienda-frontend` y la red externa `red-saas`. La configuracion del Nginx principal se conserva.
+El Dockerfile y Compose conservan exactamente su contenido anterior a la modularizacion. El sitio generado en `public/` contiene las rutas originales `index.html`, `css/`, `js/`, `img/` y el archivo de verificacion.
+
+Para construir con el Dockerfile original se usa `public/` como contexto:
+
+```bash
+python3 scripts/build.py --image tiendamgr-tienda-frontend
+```
+
+Ese comando construye la imagen y no reinicia servicios. Cuando decidas aplicarla con el Compose existente:
+
+```bash
+docker compose up -d --no-build
+```
+
+La construccion directa con `docker compose up --build` desde los fuentes copiaria la plantilla sin ensamblar. Usa el comando anterior para preparar la imagen. La recreacion del contenedor puede causar una interrupcion breve.
+
+Se conservan `nginx:alpine`, el puerto 80, `tienda-frontend`, la red externa `red-saas` y la configuracion del Nginx principal.
 
 El repositorio del servidor esta en `/srv/proyectos/TiendaMGR`. Verifica rama, estado y respaldo antes de actualizar. El CI valida los cambios; no reinicia produccion automaticamente.
