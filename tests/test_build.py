@@ -1,0 +1,67 @@
+"""Comprueba que la modularizacion conserve el contenido publicado."""
+import hashlib
+import json
+from pathlib import Path
+import re
+import subprocess
+import unittest
+from html.parser import HTMLParser
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+class Document(HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.events = []
+
+    def handle_starttag(self, tag, attrs):
+        self.events.append(('start', tag, attrs))
+
+    def handle_endtag(self, tag):
+        self.events.append(('end', tag))
+
+    def handle_data(self, data):
+        value = ' '.join(data.split())
+        if value:
+            self.events.append(('text', value))
+
+
+def fingerprint(name, text):
+    if name.endswith('.html'):
+        document = Document()
+        document.feed(text)
+        value = json.dumps(document.events, ensure_ascii=False)
+    else:
+        value = re.sub(r'/\*.*?\*/', '', text, flags=re.S)
+        value = re.sub(r'^\s*//[^\n]*', '', value, flags=re.M)
+        value = re.sub(r'\s+', '', value)
+    return hashlib.sha256(value.encode()).hexdigest()
+
+
+class BuildTests(unittest.TestCase):
+    def test_generated_files_are_current(self):
+        subprocess.run(['python3', 'scripts/build.py', '--check'], cwd=ROOT, check=True)
+
+    def test_content_matches_original_site(self):
+        expected = json.loads((ROOT / 'tests/original.json').read_text())
+        for name, digest in expected.items():
+            with self.subTest(file=name):
+                self.assertEqual(fingerprint(name, (ROOT / name).read_text()), digest)
+
+    def test_local_assets_exist(self):
+        document = Document()
+        document.feed((ROOT / 'index.html').read_text())
+        for event in document.events:
+            if event[0] != 'start':
+                continue
+            for key, value in event[2]:
+                if key in ('src', 'href') and value and not value.startswith(('https:', 'mailto:', '#')):
+                    self.assertTrue((ROOT / value).is_file(), value)
+        css = (ROOT / 'css/estilos.css').read_text()
+        for value in re.findall(r'url\([\"\x27]?(.*?)[\"\x27]?\)', css):
+            self.assertTrue((ROOT / 'css' / value).is_file(), value)
+
+
+if __name__ == '__main__':
+    unittest.main()
