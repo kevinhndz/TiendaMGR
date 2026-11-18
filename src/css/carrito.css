@@ -1,0 +1,147 @@
+.carrito-contenido {
+    width: min(700px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    background: white;
+    border-radius: 22px;
+    position: relative;
+    padding: 30px;
+}
+
+.carrito-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 55px;
+    margin-bottom: 25px;
+}
+
+.carrito-header h2 {
+    font-size: 28px;
+    color: #17202a;
+}
+
+.carrito-items {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.carrito-vacio {
+    text-align: center;
+    padding: 60px 20px;
+    color: #888;
+}
+
+.carrito-vacio i {
+    font-size: 45px;
+    margin-bottom: 15px;
+}
+
+.carrito-item {
+    display: grid;
+    grid-template-columns: 70px 1fr auto;
+    gap: 15px;
+    align-items: center;
+    padding: 12px;
+    border: 1px solid #e5e5e5;
+    border-radius: 15px;
+}
+
+.carrito-item img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.carrito-item h3 {
+    font-size: 16px;
+}
+
+.carrito-item p {
+    color: #777;
+    font-size: 13px;
+}
+
+.carrito-item-precio {
+    font-weight: 800;
+    margin-top: 5px;
+}
+
+.carrito-controles {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 8px;
+}
+
+.carrito-controles button {
+    width: 28px;
+    height: 28px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.btn-eliminar {
+    color: #b00020;
+    border: none !important;
+    font-size: 16px;
+}
+
+.carrito-footer {
+    border-top: 1px solid #eee;
+    margin-top: 25px;
+    padding-top: 20px;
+}
+
+.carrito-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+.carrito-total strong {
+    font-size: 28px;
+}
+
+.btn-finalizar {
+    width: 100%;
+    border: none;
+    background: #25D366;
+    color: white;
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-finalizar:hover {
+    background: #1ebe5d;
+    transform: translateY(-2px);
+}
+
+.btn-vaciar {
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-vaciar:hover {
+    background: #f4f4f4;
+}
+
+
+
+

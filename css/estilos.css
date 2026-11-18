@@ -10,7 +10,7 @@ html {
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-    /* Fondo panorámico restaurado; las secciones usan capas claras para mantener la lectura. */
+    
     background-color: #eaf2f4;
     background-image: linear-gradient(rgba(248, 251, 252, .48), rgba(248, 251, 252, .48)), url("../img/fondo-playa.jpg");
     background-size: cover;
@@ -48,9 +48,7 @@ a {
 }
 
 
-/* =====================================================
-   HEADER
-===================================================== */
+
 
 .header {
     position: sticky;
@@ -91,9 +89,7 @@ a {
 }
 
 
-/* =====================================================
-   CARRITO HEADER
-===================================================== */
+
 
 .btn-carrito {
     border: none;
@@ -126,9 +122,7 @@ a {
 }
 
 
-/* =====================================================
-   HERO
-===================================================== */
+
 
 .hero {
     min-height: 650px;
@@ -225,9 +219,7 @@ a {
 }
 
 
-/* =====================================================
-   SECCIONES
-===================================================== */
+
 
 section {
     padding: 90px 0;
@@ -257,9 +249,7 @@ section {
 }
 
 
-/* =====================================================
-   PRODUCTOS
-===================================================== */
+
 
 .productos {
     background-image: linear-gradient(180deg, rgba(245, 249, 250, .91), rgba(238, 245, 247, .87)), url("../img/tazas/taza.jpg");
@@ -406,9 +396,7 @@ section {
 }
 
 
-/* =====================================================
-   MODALES GENERALES
-===================================================== */
+
 
 .producto-modal,
 .carrito-modal,
@@ -497,9 +485,7 @@ section {
 }
 
 
-/* =====================================================
-   CAMPOS
-===================================================== */
+
 
 .modal-campo {
     margin-bottom: 18px;
@@ -542,9 +528,7 @@ section {
 }
 
 
-/* =====================================================
-   PRECIO
-===================================================== */
+
 
 .modal-precio {
     background: #f1f3f5;
@@ -562,9 +546,7 @@ section {
 }
 
 
-/* =====================================================
-   CARRITO
-===================================================== */
+
 
 .carrito-contenido {
     width: min(700px, 100%);
@@ -711,9 +693,7 @@ section {
 }
 
 
-/* =====================================================
-   CLIENTE
-===================================================== */
+
 
 .cliente-contenido {
     width: min(600px, 100%);
@@ -736,9 +716,7 @@ section {
 }
 
 
-/* =====================================================
-   PERSONALIZAMOS / GALERIA / CONTACTO
-===================================================== */
+
 
 .personalizamos,
 .galeria,
@@ -748,7 +726,7 @@ section {
     background-attachment: fixed;
 }
 
-/* Cada sección lleva una imagen relacionada, con una capa clara para que el texto siga legible. */
+
 .personalizamos {
     background-image: linear-gradient(rgba(255,255,255,.90), rgba(255,255,255,.86)), url("../img/camisas/camisa.jpg");
 }
@@ -799,9 +777,7 @@ section {
 }
 
 
-/* =====================================================
-   WHATSAPP FLOTANTE
-===================================================== */
+
 
 .whatsapp-flotante {
     position: fixed;
@@ -826,9 +802,7 @@ section {
 }
 
 
-/* =====================================================
-   FOOTER
-===================================================== */
+
 
 .footer {
     background: #17202a;
@@ -844,9 +818,7 @@ section {
 }
 
 
-/* =====================================================
-   ICONOS
-===================================================== */
+
 
 .btn-primary i,
 .btn-secondary i,
@@ -857,9 +829,7 @@ section {
 }
 
 
-/* =====================================================
-   TABLET
-===================================================== */
+
 
 @media (max-width: 950px) {
 
@@ -895,9 +865,7 @@ section {
 }
 
 
-/* =====================================================
-   CELULAR
-===================================================== */
+
 
 @media (max-width: 650px) {
 
@@ -999,10 +967,7 @@ section {
         font-size: 28px;
     }
 }
-/* =====================================================
-   PULIDO VISUAL Y ACCESIBILIDAD
-   Mejoras añadidas conservando los estilos y componentes originales.
-===================================================== */
+
 :root {
     --brand-primary: #123f5a;
     --brand-primary-dark: #0b2f45;
@@ -1229,7 +1194,7 @@ input, select, textarea {
 }
 
 
-/* Ajustes de contraste para que las tarjetas de productos destaquen sobre el fondo. */
+
 .producto-card {
     background: rgba(255, 255, 255, .97);
     backdrop-filter: blur(5px);

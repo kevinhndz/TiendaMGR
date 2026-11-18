@@ -1,0 +1,23 @@
+.cliente-contenido {
+    width: min(600px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    background: white;
+    border-radius: 22px;
+    padding: 40px;
+    position: relative;
+}
+
+.form-cliente {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.form-grupo {
+    width: 100%;
+}
+
+
+
+
