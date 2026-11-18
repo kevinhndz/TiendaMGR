@@ -1,36 +1,36 @@
-    document.addEventListener(
-        "keydown",
-        function (evento) {
+import { modal, carritoModal, clienteModal } from './elementos.js';
+import { actualizarCarrito } from './carrito.js';
+import './producto.js';
+import './pedido.js';
+import './galeria.js';
 
-            if (
-                evento.key === "Escape"
-            ) {
+document.addEventListener(
+    "keydown",
+    function (evento) {
 
-                modal.classList.remove(
-                    "activo"
-                );
+        if (
+            evento.key === "Escape"
+        ) {
 
-                carritoModal.classList.remove(
-                    "activo"
-                );
+            modal.classList.remove(
+                "activo"
+            );
 
-                clienteModal.classList.remove(
-                    "activo"
-                );
+            carritoModal.classList.remove(
+                "activo"
+            );
 
-                document.body.classList.remove(
-                    "bloqueado"
-                );
+            clienteModal.classList.remove(
+                "activo"
+            );
 
-            }
+            document.body.classList.remove(
+                "bloqueado"
+            );
 
         }
-    );
 
+    }
+);
 
-
-    
-
-    actualizarCarrito();
-
-});
+actualizarCarrito();

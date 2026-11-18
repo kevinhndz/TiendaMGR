@@ -1,54 +1,42 @@
-    document.querySelectorAll(
-        ".miniatura"
-    ).forEach(function (miniatura) {
+document.querySelectorAll(
+    ".miniatura"
+).forEach(function (miniatura) {
 
+    miniatura.addEventListener(
+        "click",
+        function () {
 
-        miniatura.addEventListener(
-            "click",
-            function () {
+            const nuevaImagen =
+                miniatura.dataset.imagen;
 
+            const galeria =
+                miniatura.closest(
+                    ".producto-galeria"
+                );
 
-                const nuevaImagen =
-                    miniatura.dataset.imagen;
+            const imagenPrincipal =
+                galeria.querySelector(
+                    ".imagen-principal"
+                );
 
+            imagenPrincipal.src =
+                nuevaImagen;
 
-                const galeria =
-                    miniatura.closest(
-                        ".producto-galeria"
-                    );
+            galeria.querySelectorAll(
+                ".miniatura"
+            ).forEach(function (item) {
 
-
-                const imagenPrincipal =
-                    galeria.querySelector(
-                        ".imagen-principal"
-                    );
-
-
-                imagenPrincipal.src =
-                    nuevaImagen;
-
-
-                galeria.querySelectorAll(
-                    ".miniatura"
-                ).forEach(function (item) {
-
-                    item.classList.remove(
-                        "activa"
-                    );
-
-                });
-
-
-                miniatura.classList.add(
+                item.classList.remove(
                     "activa"
                 );
 
-            }
-        );
+            });
 
-    });
+            miniatura.classList.add(
+                "activa"
+            );
 
+        }
+    );
 
-
-    
-
+});

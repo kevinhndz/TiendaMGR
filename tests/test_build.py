@@ -16,7 +16,8 @@ class Document(HTMLParser):
         self.events = []
 
     def handle_starttag(self, tag, attrs):
-        self.events.append(('start', tag, attrs))
+        self.events.append(('start', tag, [(key, value) for key, value in attrs
+                                                 if not (tag == 'script' and key == 'type')]))
 
     def handle_endtag(self, tag):
         self.events.append(('end', tag))
@@ -47,20 +48,26 @@ class BuildTests(unittest.TestCase):
         expected = json.loads((ROOT / 'tests/original.json').read_text())
         for name, digest in expected.items():
             with self.subTest(file=name):
-                self.assertEqual(fingerprint(name, (ROOT / name).read_text()), digest)
+                self.assertEqual(fingerprint(name, (ROOT / 'public' / name).read_text()), digest)
+
+    def test_modules_have_valid_syntax(self):
+        for path in (ROOT / 'src/js').glob('*.js'):
+            with self.subTest(file=path.name):
+                subprocess.run(['node', '--input-type=module', '--check'],
+                               input=path.read_text(), text=True, check=True)
 
     def test_local_assets_exist(self):
         document = Document()
-        document.feed((ROOT / 'index.html').read_text())
+        document.feed((ROOT / 'public/index.html').read_text())
         for event in document.events:
             if event[0] != 'start':
                 continue
             for key, value in event[2]:
                 if key in ('src', 'href') and value and not value.startswith(('https:', 'mailto:', '#')):
-                    self.assertTrue((ROOT / value).is_file(), value)
-        css = (ROOT / 'css/estilos.css').read_text()
+                    self.assertTrue((ROOT / 'public' / value).is_file(), value)
+        css = (ROOT / 'public/css/estilos.css').read_text()
         for value in re.findall(r'url\([\"\x27]?(.*?)[\"\x27]?\)', css):
-            self.assertTrue((ROOT / 'css' / value).is_file(), value)
+            self.assertTrue((ROOT / 'public/css' / value).is_file(), value)
 
 
 if __name__ == '__main__':

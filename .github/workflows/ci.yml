@@ -16,10 +16,21 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Generar sitio
+        run: python3 scripts/build.py
       - name: Validar archivos generados y recursos
         run: python3 -m unittest discover -s tests -v
       - name: Validar sintaxis JavaScript
-        run: node --check js/script.js
+        run: |
+          for archivo in src/js/*.js; do
+            node --input-type=module --check < "$archivo"
+          done
+      - name: Instalar herramientas de prueba
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: Probar flujos en Chromium
+        run: node tests/browser.cjs
       - name: Validar Compose
         run: docker compose config --quiet
       - name: Construir imagen existente

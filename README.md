@@ -2,33 +2,44 @@
 
 Sitio de Creaciones Style MG-R con catalogo, personalizacion, carrito local y pedidos por WhatsApp.
 
-## Editar el sitio
+## Archivos editables
 
-- `src/html/index.html`: estructura principal y orden de las secciones.
-- `src/html/`: cabecera, secciones, tarjetas de productos, modales y pie.
-- `src/css/`: estilos por responsabilidad. `orden.txt` conserva la cascada original.
-- `src/js/`: estado, elementos, formato, producto, carrito, pedido y galeria. `orden.txt` conserva el orden de ejecucion.
+- `index.html`: plantilla principal corta; incluye las secciones de `src/html/`.
+- `src/html/`: cabecera, secciones, productos, modales y pie.
+- `src/css/`: diez archivos de estilos. `orden.txt` conserva el orden de la cascada.
+- `src/js/`: modulos JavaScript completos con imports y exports. `estado.js` conserva el carrito y el producto seleccionado; `inicio.js` inicia la interfaz.
 
-Despues de editar los archivos fuente:
+El navegador carga modulos nativos con `type="module"`. Cada archivo JavaScript tiene sintaxis valida por si mismo. No hay funciones abiertas entre archivos.
+
+## Generar y probar
 
 ```bash
 python3 scripts/build.py
 python3 -m unittest discover -s tests -v
-node --check js/script.js
 ```
 
-El generador expande `{{ incluir:archivo.html }}` y concatena CSS y JavaScript. Los fragmentos JavaScript comparten el mismo cierre de `DOMContentLoaded`; no son scripts independientes. No hay peticiones adicionales ni dependencias nuevas en el navegador.
+La salida se escribe en `public/`, carpeta generada e ignorada por Git. No edites sus archivos. El HTML incluye las secciones antes de publicarse para conservar el contenido disponible desde la primera respuesta HTTP. El CSS conserva la cascada y las rutas originales. JavaScript se publica como modulos separados.
 
-Incluye en cada commit los archivos fuente y los generados: `index.html`, `css/estilos.css` y `js/script.js`. Docker sigue copiando los mismos archivos estaticos. No edites directamente los generados.
+Para ver el sitio localmente:
 
-## Validacion continua
+```bash
+python3 -m http.server 8080 --directory public
+```
 
-`.github/workflows/ci.yml` se ejecuta en pushes y pull requests. Verifica generacion, recursos locales, sintaxis JavaScript, Compose y HTTP dentro de la imagen Nginx existente. No reinicia servicios de produccion.
+Para probar los flujos en Chromium:
 
-`tests/original.json` registra las huellas del sitio anterior a la modularizacion. Un cambio intencional de contenido requiere revisar y actualizar esa referencia; no la regeneres para ocultar una regresion.
+```bash
+npm ci
+npx playwright install chromium
+node tests/browser.cjs
+```
 
-## Despliegue existente
+Node y Playwright solo se usan para pruebas. No se agregan a la imagen de produccion. Las pruebas cubren productos, cantidades, persistencia, pedido de WhatsApp sin enviarlo, precio de placas, miniaturas y menu movil.
 
-La aplicacion usa `nginx:alpine`, el servicio `tienda-frontend` y la red externa `red-saas`. Otro contenedor Nginx recibe el trafico del dominio. Se conservan `Dockerfile` y `docker-compose.yml`.
+## CI y despliegue existente
 
-El servidor mantiene el repositorio en `/srv/proyectos/TiendaMGR`. Antes de actualizar, verifica rama, estado y respaldo. Genera y valida los archivos antes de construir la imagen. La reconstruccion habitual con Compose reemplaza el contenedor y puede producir una interrupcion breve; no ejecutes `docker compose down` para actualizar.
+`.github/workflows/ci.yml` genera el sitio, comprueba HTML y CSS contra la referencia anterior, verifica la sintaxis de cada modulo y prueba los flujos en Chromium. Tambien construye la imagen Docker y verifica sus respuestas HTTP.
+
+Antes de construir la imagen, ejecuta `python3 scripts/build.py`. El Dockerfile copia los archivos generados de `public/`, conservando `nginx:alpine`, las rutas publicas y el puerto 80. Compose sigue usando `tienda-frontend` y la red externa `red-saas`. La configuracion del Nginx principal se conserva.
+
+El repositorio del servidor esta en `/srv/proyectos/TiendaMGR`. Verifica rama, estado y respaldo antes de actualizar. El CI valida los cambios; no reinicia produccion automaticamente.
