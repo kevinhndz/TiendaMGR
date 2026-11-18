@@ -34,7 +34,7 @@ jobs:
       - name: Validar Compose
         run: docker compose config --quiet
       - name: Construir imagen existente
-        run: docker build -t tienda-ci .
+        run: python3 scripts/build.py --image tienda-ci
       - name: Probar archivos servidos por Nginx
         shell: bash
         run: |
