@@ -31,6 +31,6 @@ jobs:
           docker run -d --name tienda-ci -p 127.0.0.1:8080:80 tienda-ci
           trap 'docker rm -f tienda-ci' EXIT
           for archivo in index.html css/estilos.css js/script.js img/logo.PNG google568e52d863922e97.html; do
-            curl --fail --silent --show-error --retry 10 --retry-connrefused --retry-delay 1 "http://127.0.0.1:8080/$archivo" -o /tmp/recurso
+            curl --fail --silent --show-error --retry 10 --retry-all-errors --retry-delay 1 "http://127.0.0.1:8080/$archivo" -o /tmp/recurso
             test -s /tmp/recurso
           done
