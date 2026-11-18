@@ -1,0 +1,352 @@
+<div id="productoModal" class="producto-modal">
+
+    <div class="modal-contenido">
+
+        <button id="cerrarModal" class="modal-cerrar">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="modal-imagen">
+
+            <img id="modalImagen"
+                src=""
+                alt="Producto">
+
+        </div>
+
+
+        <div class="modal-info">
+
+            <span class="producto-categoria">
+                CREACIONES STYLE MG-R
+            </span>
+
+            <h2 id="modalProducto">
+                Producto
+            </h2>
+
+            <p id="modalDescripcion"></p>
+
+
+            <div class="modal-campo"
+                id="campoTipoCamisa">
+
+                <label>
+                    Tipo de camisa
+                </label>
+
+                <select id="tipoCamisa">
+
+                    <option>Cuello redondo</option>
+                    <option>Cuello V</option>
+                    <option>Polo</option>
+                    <option>Manga corta</option>
+                    <option>Manga larga</option>
+                    <option>Colombiana</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="modal-campo"
+                id="campoTipoPlaca">
+
+                <label>
+                    Tipo de vehículo
+                </label>
+
+                <select id="tipoPlaca">
+
+                    <option value="Moto" data-precio="2500">
+                        Moto — L.2,500
+                    </option>
+
+                    <option value="Carro" data-precio="3500">
+                        Carro — L.3,500
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="modal-campo">
+
+                <label>
+                    Color
+                </label>
+
+                <select id="colorProducto">
+
+                    <option>No especificado</option>
+                    <option>Negro</option>
+                    <option>Blanco</option>
+                    <option>Rojo</option>
+                    <option>Azul</option>
+                    <option>Verde</option>
+                    <option>Amarillo</option>
+                    <option>Otro</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="modal-campo"
+                id="campoTalla">
+
+                <label>
+                    Talla
+                </label>
+
+                <select id="tallaProducto">
+
+                    <option>No aplica</option>
+                    <option>XS</option>
+                    <option>S</option>
+                    <option>M</option>
+                    <option>L</option>
+                    <option>XL</option>
+                    <option>XXL</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="modal-campo">
+
+                <label>
+                    Cantidad
+                </label>
+
+                <input type="number"
+                    id="cantidadProducto"
+                    min="1"
+                    value="1">
+
+            </div>
+
+
+            <div class="modal-campo">
+
+                <label>
+                    Personalización
+                </label>
+
+                <textarea id="personalizacionProducto"
+                    placeholder="Nombre, frase, diseño o detalles..."></textarea>
+
+            </div>
+
+
+            <div class="modal-precio">
+
+                <span>
+                    Precio
+                </span>
+
+                <strong id="modalPrecio">
+                    L.0
+                </strong>
+
+            </div>
+
+
+            <button id="agregarCarrito"
+                class="modal-whatsapp btn-agregar">
+
+                <i class="fa-solid fa-cart-plus"></i>
+
+                Agregar al pedido
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div id="carritoModal" class="carrito-modal">
+
+    <div class="carrito-contenido">
+
+        <div class="carrito-header">
+
+            <h2>
+                <i class="fa-solid fa-cart-shopping"></i>
+                Mi pedido
+            </h2>
+
+            <button id="cerrarCarrito"
+                class="modal-cerrar">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <div id="carritoItems"
+            class="carrito-items">
+
+            <div class="carrito-vacio">
+
+                <i class="fa-solid fa-cart-shopping"></i>
+
+                <p>
+                    Tu pedido está vacío.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="carrito-footer">
+
+            <div class="carrito-total">
+
+                <span>
+                    Total:
+                </span>
+
+                <strong id="carritoTotal">
+                    L.0
+                </strong>
+
+            </div>
+
+
+            <button id="finalizarPedido"
+                class="btn-finalizar">
+
+                <i class="fa-brands fa-whatsapp"></i>
+
+                Finalizar pedido
+
+            </button>
+
+
+            <button id="vaciarCarrito"
+                class="btn-vaciar">
+
+                Vaciar carrito
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div id="clienteModal"
+    class="cliente-modal">
+
+    <div class="cliente-contenido">
+
+        <button id="cerrarCliente"
+            class="modal-cerrar">
+
+            <i class="fa-solid fa-xmark"></i>
+
+        </button>
+
+
+        <div class="section-title">
+
+            <span>
+                DATOS DEL CLIENTE
+            </span>
+
+            <h2>
+                Finalizar pedido
+            </h2>
+
+            <p>
+                Completa tus datos para enviar
+                el pedido por WhatsApp.
+            </p>
+
+        </div>
+
+
+        <form id="formCliente"
+            class="form-cliente">
+
+
+            <div class="form-grupo">
+
+                <label>
+                    Nombre completo
+                </label>
+
+                <input type="text"
+                    id="clienteNombre"
+                    required
+                    placeholder="Tu nombre">
+
+            </div>
+
+
+            <div class="form-grupo">
+
+                <label>
+                    Teléfono
+                </label>
+
+                <input type="tel"
+                    id="clienteTelefono"
+                    required
+                    placeholder="Tu número">
+
+            </div>
+
+
+            <div class="form-grupo">
+
+                <label>
+                    Ubicación
+                </label>
+
+                <input type="text"
+                    id="clienteUbicacion"
+                    placeholder="Ciudad o lugar de entrega">
+
+            </div>
+
+
+            <div class="form-grupo">
+
+                <label>
+                    Comentarios
+                </label>
+
+                <textarea id="clienteComentario"
+                    placeholder="Información adicional..."></textarea>
+
+            </div>
+
+
+            <button type="submit"
+                class="btn-finalizar">
+
+                <i class="fa-brands fa-whatsapp"></i>
+
+                Enviar pedido por WhatsApp
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
